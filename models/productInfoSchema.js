@@ -7,14 +7,8 @@ const ProductInfoSchema = new mongoose.Schema({
     emailId: { type: String, default: '' },
     products: [{
         dateAdded: Date,
-        title: String,
         productId: String,
-        price: String,
-        productImage: String,
         formattedUrl : String,
-        features: { type: Array, default: [] },
-        rating: String,
-        priceHistory: { type: Array, default: [] }
     }],
     accountCreation: Date,
     premium: { type: Boolean, default: false }

@@ -9,8 +9,10 @@ router.get('/:user_id/:product_url*', async (req, res) => {
     const userAgent = new UserAgent({ deviceCategory: 'desktop' }).toString()
     const userId = req.params.user_id
     const productURL = req.params['product_url'] + req.params[0]
+    const urlSplit = productURL.split('/').filter(n => n)
+    const formattedUrl = `//${urlSplit[1]}/${urlSplit[2]}/${urlSplit[3]}/${urlSplit[4]}`
     async function FetchPrice() {
-        const { data } = await axios.get(productURL, { headers: { 'User-Agent': userAgent } })
+        const { data } = await axios.get(formattedUrl, { headers: { 'User-Agent': userAgent } })
         const $ = cheerio.load(data)
         const urlSplit = productURL.split('/').filter(n => n)
         const index = urlSplit.indexOf('dp') + 1

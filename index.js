@@ -14,10 +14,7 @@ import GetPriceRoute from './routes/getPrice.js'
 import AddNewUserRoute from './routes/createUser.js'
 import UserInfoRoute from './routes/userInfo.js'
 
-import ProductInfoModel from './models/productInfoSchema.js'
-
 import { UpdatePrice } from './functions/updatePrice.js'
-import { SendMail } from './functions/sendMail.js'
 
 const app = express()
 
