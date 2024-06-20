@@ -9,22 +9,34 @@ router.get('/:user_id/:product_url*', async (req, res) => {
     const userAgent = new UserAgent({ deviceCategory: 'desktop' }).toString()
     const userId = req.params.user_id
     const productURL = req.params['product_url'] + req.params[0]
-    await axios.get(productURL).then(async (data) => {
-        const $ = cheerio.load(data.data)
-        let price = $(".a-price-symbol").html() + $(".a-price-whole").first().text().slice(0, -1)
-        // if(price === undefined) {
-        //     await axios.get(productURL, { headers: { 'User-Agent': userAgent } }).then(data => {
-        //         const $ = cheerio.load(data.data)
-        //         price = $(".a-price-symbol").html() + $(".a-price-whole").first().text().slice(0, -1)
-        //     })
-        // } else {
-        //     price = $(".a-price-symbol").html() + $(".a-price-whole").first().text().slice(0, -1)
-        // }
+    async function FetchPrice() {
+        const { data } = await axios.get(productURL, { headers: { 'User-Agent': userAgent } })
+        const $ = cheerio.load(data)
         const urlSplit = productURL.split('/').filter(n => n)
         const index = urlSplit.indexOf('dp') + 1
         const productID = urlSplit[index]
+        let price
+        if (productID.startsWith('B')) {
+            price = $(".a-price-symbol").html() + $(".a-price-whole").first().text().slice(0, -1)
+        } else {
+            price = $("#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center.aok-relative > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2)").text()
+        }
+
         res.json({ productURL, price, productID })
-    }).catch(err => res.json({ error: err.message }))
+    }
+    new Promise(async (resolve, reject) => {
+        try {
+            await FetchPrice()
+            resolve
+        } catch (error) {
+            await FetchPrice()
+            reject
+        }
+
+    }).catch(async () => {
+        FetchPrice()
+
+    })
 })
 
 export default router;

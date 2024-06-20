@@ -12,9 +12,12 @@ import AddProductRoute from './routes/addProduct.js'
 import RemoveProductRoute from './routes/removeProduct.js'
 import GetPriceRoute from './routes/getPrice.js'
 import AddNewUserRoute from './routes/createUser.js'
+import UserInfoRoute from './routes/userInfo.js'
+
 import ProductInfoModel from './models/productInfoSchema.js'
 
 import { UpdatePrice } from './functions/updatePrice.js'
+import { SendMail } from './functions/sendMail.js'
 
 const app = express()
 
@@ -32,6 +35,7 @@ app.use('/add', AddProductRoute)
 app.use('/remove', RemoveProductRoute)
 app.use('/price', GetPriceRoute)
 app.use('/create', AddNewUserRoute)
+app.use('/user', UserInfoRoute)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`)
@@ -41,7 +45,5 @@ mongoose.connect(process.env.CONNECTION_STRING, { dbName: 'product-tracker' }).t
     console.log('Connected to MongoDB')
 })
 
-// cron.schedule('0 0 * * * *', () => {
-//     console.log('1 hour')
-// })
+
 UpdatePrice()

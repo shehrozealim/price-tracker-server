@@ -4,6 +4,7 @@ const ProductInfoSchema = new mongoose.Schema({
     userInfo: {
         userId: { type: String },
     },
+    emailId: { type: String, default: '' },
     products: [{
         dateAdded: Date,
         title: String,
