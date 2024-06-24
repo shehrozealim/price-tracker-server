@@ -10,9 +10,13 @@ router.get('/:user_id/:product_url*', async (req, res) => {
     const userId = req.params.user_id
     const productURL = req.params['product_url'] + req.params[0]
     const urlSplit = productURL.split('/').filter(n => n)
-    const formattedUrl = `//${urlSplit[1]}/${urlSplit[2]}/${urlSplit[3]}/${urlSplit[4]}`
+    const formattedUrl = `https://${urlSplit[1]}/${urlSplit[2]}/${urlSplit[3]}/${urlSplit[4]}`
+    async function FetchData (formattedUrl) {
+        const { data } = await axios.get(formattedUrl, { headers: { 'User-Agent': userAgent }})
+        return data;
+    }
     async function FetchPrice() {
-        const { data } = await axios.get(formattedUrl, { headers: { 'User-Agent': userAgent } })
+        const data = await FetchData(formattedUrl)
         const $ = cheerio.load(data)
         const urlSplit = productURL.split('/').filter(n => n)
         const index = urlSplit.indexOf('dp') + 1
@@ -23,8 +27,11 @@ router.get('/:user_id/:product_url*', async (req, res) => {
         } else {
             price = $("#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center.aok-relative > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span:nth-child(2)").text()
         }
+        if(price === null) {
+            return await FetchData(formattedUrl)
+        }
 
-        res.json({ productURL, price, productID })
+        return res.json({ formattedUrl, price, productID })
     }
     new Promise(async (resolve, reject) => {
         try {
@@ -36,7 +43,7 @@ router.get('/:user_id/:product_url*', async (req, res) => {
         }
 
     }).catch(async () => {
-        FetchPrice()
+        await FetchPrice()
 
     })
 })

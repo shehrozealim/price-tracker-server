@@ -18,12 +18,13 @@ router.get('/:user_id/:product_url*', async (req, res) => {
         dateAdded: new Date().getTime(),
         title: data.title,
         price: data.price,
-        productImage: data.imageUrl,
+        productImage: data.productImage,
         productId: productID,
         formattedUrl: data.formattedUrl,
         features: data.features,
         rating: data.rating,
-        priceHistory: data.priceHistory
+        priceHistory: data.priceHistory,
+        userIds: userId
     }
     const productData = {
         dateAdded: new Date().getTime(),
@@ -36,7 +37,8 @@ router.get('/:user_id/:product_url*', async (req, res) => {
             await product.save()
             console.log(`New product added: ${productID}`)
         } else {
-            product.usersWatchlisted = product.usersWatchlisted + 1
+            product.usersWatchlisted = product.usersWatchlisted + 1;
+            product.userIds.push(userId)
             await product.save()
         }
     }).catch(err => console.log(err.message))

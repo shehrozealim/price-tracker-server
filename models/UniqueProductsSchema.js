@@ -10,7 +10,8 @@ const ProductsSchema = mongoose.Schema({
     features: { type: Array, default: [] },
     rating: String,
     priceHistory: { type: Array, default: [] },
-    usersWatchlisted: { type: Number, default: 1 }
+    usersWatchlisted: { type: Number, default: 1 },
+    userIds : { type: Array, default: [] }
 })
 
 export default mongoose.model('UniqueProductsModel', ProductsSchema)
