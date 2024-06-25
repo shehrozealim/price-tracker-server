@@ -36,20 +36,22 @@ router.get('/:user_id/:product_url*', async (req, res) => {
             date: dateAdded,
             price: price
         }]
-        const rating = $("#averageCustomerReviews > span:nth-child(1) > span > span > a").find('span').html().trim()
+        var rating = $("#averageCustomerReviews > span:nth-child(1) > span > span > a").find('span').html()
+        if(!rating) {
+            rating = ''
+        } else {
+            rating = rating.trim()
+        }
         const productData = { title, price, productImage, features, rating, formattedUrl, productId, dateAdded, priceHistory }
         res.status(200).send(productData)
 
     }
-    new Promise(async (resolve, reject) => {
-        try {
-            await GetProductDetails()
-            resolve
-        } catch (error) {
-            await GetProductDetails()
-            reject
-        }
-    }).catch(async () => await GetProductDetails())
+    try {
+        await GetProductDetails()
+    } catch (error) {
+        console.log(error.message)
+        await GetProductDetails()
+    }
 })
 
 export default router

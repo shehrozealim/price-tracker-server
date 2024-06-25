@@ -12,7 +12,8 @@ router.get('/:user_id/:product_url*', async (req, res) => {
     const urlSplit = productURL.split('/').filter(n => n)
     const index = urlSplit.indexOf('dp') + 1
     const productID = urlSplit[index]
-    const { data } = await axios.get(`${process.env.BASE_URL}/product/${userId}/${productURL}`)
+    const baseURL = req.protocol + '://' + req.get('host')
+    const { data } = await axios.get(`${baseURL}/product/${userId}/${productURL}`)
     const formattedUrl = `//${urlSplit[1]}/${urlSplit[2]}/${urlSplit[3]}/${urlSplit[4]}`
     const newProduct = {
         dateAdded: new Date().getTime(),

@@ -9,7 +9,7 @@ router.get('/:user_id', async (req, res) => {
     const productIds = data.products.map(product => product.productId)
     const addedProducts = []
     await Promise.all(productIds.map(async (productId) => {
-        await UniqueProductsModel.findOne({ productId }).then(product => {
+        await UniqueProductsModel.findOne({ productId }).lean().then(product => {
             addedProducts.push(product)
         })
     })).then(() => {

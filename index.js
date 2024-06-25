@@ -42,5 +42,7 @@ mongoose.connect(process.env.CONNECTION_STRING, { dbName: 'product-tracker' }).t
     console.log('Connected to MongoDB')
 })
 
-
-UpdatePrice()
+cron.schedule('0 */30 * * * *', () => {
+    UpdatePrice()
+    console.log('Price updated every 30 minutes')
+})
