@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const ProductInfoSchema = new mongoose.Schema({
+const UserInfoSchema = new mongoose.Schema({
     userInfo: {
         userId: { type: String },
     },
@@ -11,7 +11,14 @@ const ProductInfoSchema = new mongoose.Schema({
         formattedUrl : String,
     }],
     accountCreation: Date,
+    userCredentials : {
+        firstName: String,
+        lastName: String,
+        password: String,
+        username: String,
+        refreshToken: String
+    },
     premium: { type: Boolean, default: false }
 }, { versionKey: false })
 
-export default mongoose.model('ProductInfoModel', ProductInfoSchema)
+export default mongoose.model('UserInfoModel', UserInfoSchema)

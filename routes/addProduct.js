@@ -1,14 +1,15 @@
 import express from 'express'
 import axios from 'axios'
 
-import ProductInfoModel from '../models/productInfoSchema.js'
+import UserInfoModel from '../models/userInfoSchema.js'
 import UniqueProductsModel from '../models/UniqueProductsSchema.js'
 
 const router = express.Router()
 
-router.get('/:user_id/:product_url*', async (req, res) => {
+router.post('/:user_id', async (req, res) => {
     const userId = req.params.user_id;
-    const productURL = req.params['product_url'] + req.params[0]
+    const productURL = req.body.productUrl
+    // const productURL = req.params['product_url'] + req.params[0]
     const urlSplit = productURL.split('/').filter(n => n)
     const index = urlSplit.indexOf('dp') + 1
     const productID = urlSplit[index]
@@ -38,13 +39,13 @@ router.get('/:user_id/:product_url*', async (req, res) => {
             await product.save()
             console.log(`New product added: ${productID}`)
         } else {
-            product.usersWatchlisted = product.usersWatchlisted + 1;
+            product.usersWatchlisted += 1;
             product.userIds.push(userId)
             await product.save()
         }
     }).catch(err => console.log(err.message))
     
-    await ProductInfoModel.findOneAndUpdate({ userInfo: { userId } }, { $push: { products: productData } }, { upsert: true }).lean().then(data => {
+    await UserInfoModel.findOneAndUpdate({ userInfo: { userId } }, { $push: { products: productData } }, { upsert: true }).lean().then(data => {
         res.json(data)
     }).catch(err => res.json({ error: err.message }))
 })

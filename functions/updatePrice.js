@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AsciiTable3 } from 'ascii-table3'
 
-import ProductInfoModel from '../models/productInfoSchema.js';
+import ProductInfoModel from '../models/userInfoSchema.js';
 import UniqueProductsModel from '../models/UniqueProductsSchema.js';
 import { SendMail } from './sendMail.js';
 
@@ -44,7 +44,7 @@ export async function UpdatePrice() {
                 [data.productID, data.price, 'same', priceDiff]
             ])
         }
-        await productData.save()
+        // await productData.save()
     }))
     console.log(table.toString())
 }

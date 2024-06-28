@@ -1,6 +1,7 @@
 import express from 'express'
-import ProductInfoModel from '../models/productInfoSchema.js'
+
 import UniqueProductsModel from '../models/UniqueProductsSchema.js'
+
 const router = express.Router()
 
 router.get('/:user_id/:product_id', async (req, res) => {
