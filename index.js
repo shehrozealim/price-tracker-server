@@ -29,16 +29,12 @@ app.get('/', (req, res) => {
     res.send('works')
 })
 
-app.use('/register', RegisterUserRoute)
 app.use('/create', AddNewUserRoute)
-app.use('/login', LoginUserRoute)
 app.use('/product', ProductInfoRoute)
 app.use('/info', AddedProductsRoute)
 app.use('/add', AddProductRoute)
 app.use('/remove', RemoveProductRoute)
 app.use('/price', GetPriceRoute)
-app.use('/refresh', RefreshRoute)
-app.use('/logout', LogoutRoute)
 app.use('/user', UserInfoRoute)
 
 const PORT = process.env.PORT || 5000
