@@ -14,10 +14,6 @@ import RemoveProductRoute from './routes/removeProduct.js'
 import GetPriceRoute from './routes/getPrice.js'
 import AddNewUserRoute from './routes/createUser.js'
 import UserInfoRoute from './routes/userInfo.js'
-import RegisterUserRoute from './routes/registerUser.js'
-import LoginUserRoute from './routes/loginUser.js'
-import RefreshRoute from './routes/refresh.js'
-import LogoutRoute from './routes/logout.js'
 
 import { UpdatePrice } from './functions/updatePrice.js'
 
